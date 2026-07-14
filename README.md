@@ -57,6 +57,7 @@ No third-party executable is required by the active implementation. Refresh-rate
 
 ## Quick start
 
+*I put the contents in a "Scripts" folder in my windows SSD 
 Run the main script with no arguments:
 
 ```powershell
@@ -69,6 +70,8 @@ The command is a toggle:
 - next run: restore normal mode.
 
 Windows may request UAC approval.
+
+**For shortcuts:** you may also run the scripts under Autohotkey when you install it to setup the shortcut of cntrl+alt+f12 to move between power modes.
 
 ### AutoHotkey v2 example
 
