@@ -69,6 +69,8 @@ The command is a toggle:
 
 Windows may request UAC approval.
 
+**For shortcuts:** you may also run the scripts under Autohotkey when you install it to setup the shortcut of cntrl+alt+f12 to move between power modes.
+
 ### AutoHotkey v2 example
 
 ```ahk
