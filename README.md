@@ -56,6 +56,7 @@ No third-party executable is required by the active implementation. Refresh-rate
 
 ## Quick start
 
+*I put the contents in a "Scripts" folder in my windows SSD 
 Run the main script with no arguments:
 
 ```powershell
