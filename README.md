@@ -5,7 +5,7 @@ An aggressive, reversible Windows power mode for a Lenovo Legion Pro 7 16IAX10H 
 The project was built for situations where battery runtime matters more than performance. It combines Windows power-plan controls, Lenovo firmware interfaces, reversible device shutdown, and a live system-discharge overlay.
 
 > [!WARNING]
-> This is hardware-specific power-management software. Review the script before using it on another Lenovo model. It intentionally disables devices and severely restricts CPU performance while enabled.
+> This is hardware-specific power-management software. Review the script before using it on another Lenovo model. It intentionally disables selected devices and restricts CPU performance while enabled. The current profile is deliberately media-safe; older minimum-core/10% revisions could starve Windows, audio, and video workloads.
 
 ## Features
 
@@ -13,21 +13,22 @@ When ultra-low-power mode is enabled, the script:
 
 - requests Lenovo Quiet mode and Hybrid-iGPU Only mode;
 - waits for and verifies firmware-level RTX 5090 disconnection;
-- restricts scheduling to the efficient CPU class;
-- asks Windows to retain only its minimum runnable E-core set;
-- parks all remaining E-cores and P-cores;
-- disables CPU boost and applies a 10% processor-performance ceiling;
-- applies maximum energy preference to both processor efficiency classes;
+- prefers the efficient CPU class while retaining overload capacity;
+- keeps approximately 4-8 E-cores available;
+- permits up to two P-cores when demand spikes;
+- disables CPU boost and applies a 40% processor-performance ceiling;
+- applies a strong energy-saving preference to both processor efficiency classes;
 - sets the OLED to 10% brightness and 60 Hz;
 - enables Windows Energy Saver for the entire battery range;
 - enables maximum PCIe, USB, Wi-Fi, iGPU, and video-playback savings;
-- applies aggressive supported idle states to both NVMe SSDs;
-- temporarily disables the Intel NPU, webcam, disconnected Ethernet, Bluetooth, unused USB4 controller, and Logitech G502 receiver;
+- applies conservative, media-safe NVMe idle and latency settings;
+- temporarily disables the Intel NPU, webcam, disconnected Ethernet, and Bluetooth;
+- always leaves USB4 controllers and USB receivers enabled so that rollback remains reliable;
 - stops Search indexing, Steam, iCUE, and NVIDIA overlay helpers when present;
 - enables Windows dark theme;
 - launches a draggable live battery-watt overlay.
 
-Turning the mode off restores the saved system state and sets display brightness to 60%.
+Turning the mode off restores the saved system state and sets display brightness to 60%. If activation throws an error after saving state, the script now attempts automatic rollback.
 
 ## Hardware target
 
@@ -119,15 +120,13 @@ Ultra mode is intentionally severe. Use these switches when the corresponding ha
 | `-KeepNpu` | Leaves Intel AI Boost enabled |
 | `-KeepCamera` | Leaves the integrated webcam enabled |
 | `-KeepEthernet` | Leaves the I226-V Ethernet controller enabled |
-| `-KeepUsb4` | Leaves the USB4 host router enabled |
-| `-KeepUsbAccessories` | Leaves the Logitech G502 receiver enabled |
 | `-NoOverlay` | Does not launch the watt overlay |
 | `-NoMessage` | Suppresses message boxes |
 
 Example:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Scripts\toggle-ultralow.ps1 -Mode On -KeepBluetooth -KeepUsb4
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Scripts\toggle-ultralow.ps1 -Mode On -KeepBluetooth
 ```
 
 ## Live watt overlay
@@ -150,7 +149,7 @@ C:\ProgramData\LegionUltraLowPower\state.json
 C:\ProgramData\LegionUltraLowPower\toggle.log
 ```
 
-If activation fails after saving state, run:
+If activation fails, the script first attempts automatic rollback. If normal mode is not fully restored, run:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Scripts\toggle-ultralow.ps1 -Mode Off
@@ -158,13 +157,17 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Scripts\toggle-ultral
 
 Do not delete `state.json` before restoration. It records which devices and settings must be restored.
 
+`-Mode Off` also repairs USB4 host-router and Logitech G502 devices that an older script revision may have disabled without recording in `state.json`.
+
+If Windows is severely unresponsive, restart the computer and run `-Mode Off` before attempting to enable ultra mode again.
+
 Do not disable the RTX through Device Manager. That does not electronically disconnect the GPU and can increase power consumption. The script uses Lenovo's embedded-controller interface instead.
 
 ## Battery-life reality
 
 The measured full-charge capacity during development was approximately 92.59 Wh. Ten hours requires a sustained whole-system draw no higher than approximately 9.26 W.
 
-Observed Chrome draw before the latest aggressive revision was approximately 14.7-18 W, equivalent to about 5.1-6.3 hours from that battery. Core parking helps when CPU activity is responsible for the draw, but it cannot eliminate the OLED panel, memory, chipset, storage, Wi-Fi, and voltage-conversion losses.
+Observed Chrome draw before the current media-safe revision was approximately 14.7-18 W, equivalent to about 5.1-6.3 hours from that battery. Core parking helps when CPU activity is responsible for the draw, but parking too many cores can increase latency and cause audio buzzing, video glitches, or an unresponsive Windows shell. The current 4-8 E-core profile preserves enough headroom for media playback and normal desktop activity.
 
 Lenovo rates the 99.9 Wh configuration for up to approximately 6.25 hours of local 1080p playback. Ten hours is a target, not a guarantee. Use the overlay to measure the result on your workload.
 

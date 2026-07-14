@@ -91,13 +91,13 @@ function Configure-UltraPlan {
     if (-not (Test-Scheme $UltraGuid)) {
         PowerCfg -Arguments @('/duplicatescheme','SCHEME_MAX',$UltraGuid) | Out-Null
     }
-    PowerCfg -Arguments @('/changename',$UltraGuid,'Legion Ultra Battery','Aggressive reversible battery mode') | Out-Null
+    PowerCfg -Arguments @('/changename',$UltraGuid,'Legion Ultra Battery','Stable media-safe battery mode') | Out-Null
     $s = @(
         @('0012ee47-9041-4b5d-9b77-535fba8b1442','6738e2c4-e8a5-4a42-b16a-e040e769756e',10),
-        @('0012ee47-9041-4b5d-9b77-535fba8b1442','d639518a-e56d-4345-8af2-b9f32fb26109',50),
-        @('0012ee47-9041-4b5d-9b77-535fba8b1442','fc95af4d-40e7-4b6d-835a-56d131dbc80e',500),
-        @('0012ee47-9041-4b5d-9b77-535fba8b1442','d3d55efd-c1ff-424e-9dc3-441be7833010',250),
-        @('0012ee47-9041-4b5d-9b77-535fba8b1442','dbc9e238-6de9-49e3-92cd-8c2b4946b472',2000),
+        @('0012ee47-9041-4b5d-9b77-535fba8b1442','d639518a-e56d-4345-8af2-b9f32fb26109',100),
+        @('0012ee47-9041-4b5d-9b77-535fba8b1442','fc95af4d-40e7-4b6d-835a-56d131dbc80e',200),
+        @('0012ee47-9041-4b5d-9b77-535fba8b1442','d3d55efd-c1ff-424e-9dc3-441be7833010',1000),
+        @('0012ee47-9041-4b5d-9b77-535fba8b1442','dbc9e238-6de9-49e3-92cd-8c2b4946b472',200),
         @('0d7dbae2-4294-402a-ba8e-26777e8488cd','309dce9b-bef4-4119-9921-a851fb12f0f4',1),
         @('19cbb8fa-5279-450e-9fac-8a3d5fedd0c1','12bbebe6-58d6-4636-95bb-3217ef867c1a',3),
         @('238c9fa8-0aad-41ed-83f4-97be242c8f20','29f6c1db-86da-48c5-9fdb-f2b67b1f44da',300),
@@ -106,26 +106,26 @@ function Configure-UltraPlan {
         @('2a737441-1930-4402-8d77-b2bebba308a3','48e6b7a6-50f5-4782-a5d4-53bb8f07e226',1),
         @('501a4d13-42af-4429-9fd1-a8218c268e20','ee12f906-d277-404b-b6da-e5fa1a576df5',2),
         @('44f3beca-a7c0-460e-9df2-bb8b99e0cba6','3619c3f2-afb2-4afc-b0e9-e7fef372de36',0),
-        @('54533251-82be-4824-96c1-47b60b740d00','893dee8e-2bef-41e0-89c6-b55d0929964c',0),
-        @('54533251-82be-4824-96c1-47b60b740d00','bc5038f7-23e0-4960-96da-33abaf5935ec',10),
+        @('54533251-82be-4824-96c1-47b60b740d00','893dee8e-2bef-41e0-89c6-b55d0929964c',5),
+        @('54533251-82be-4824-96c1-47b60b740d00','bc5038f7-23e0-4960-96da-33abaf5935ec',40),
         @('54533251-82be-4824-96c1-47b60b740d00','be337238-0d82-4146-a960-4f3749d470c7',0),
-        @('54533251-82be-4824-96c1-47b60b740d00','36687f9e-e3a5-4dbf-b1dc-15eb381c6863',100),
-        @('54533251-82be-4824-96c1-47b60b740d00','36687f9e-e3a5-4dbf-b1dc-15eb381c6864',100),
-        @('54533251-82be-4824-96c1-47b60b740d00','893dee8e-2bef-41e0-89c6-b55d0929964d',0),
-        @('54533251-82be-4824-96c1-47b60b740d00','bc5038f7-23e0-4960-96da-33abaf5935ed',10),
-        @('54533251-82be-4824-96c1-47b60b740d00','8baa4a8a-14c6-4451-8e8b-14bdbd197537',0),
+        @('54533251-82be-4824-96c1-47b60b740d00','36687f9e-e3a5-4dbf-b1dc-15eb381c6863',90),
+        @('54533251-82be-4824-96c1-47b60b740d00','36687f9e-e3a5-4dbf-b1dc-15eb381c6864',90),
+        @('54533251-82be-4824-96c1-47b60b740d00','893dee8e-2bef-41e0-89c6-b55d0929964d',5),
+        @('54533251-82be-4824-96c1-47b60b740d00','bc5038f7-23e0-4960-96da-33abaf5935ed',40),
+        @('54533251-82be-4824-96c1-47b60b740d00','8baa4a8a-14c6-4451-8e8b-14bdbd197537',1),
         @('54533251-82be-4824-96c1-47b60b740d00','5d76a2ca-e8c0-402f-a133-2158492d58ad',0),
         @('54533251-82be-4824-96c1-47b60b740d00','94d3a615-a899-4ac5-ae2b-e4d8f634367f',0),
         # 275HX: class 0 is the 16 E-cores; class 1 is the 8 P-cores.
-        # A zero maximum asks Windows to keep only its minimum runnable set.
-        @('54533251-82be-4824-96c1-47b60b740d00','0cc5b647-c1df-4637-891a-dec35c318583',0),
-        @('54533251-82be-4824-96c1-47b60b740d00','ea062031-0e34-4ff1-9b6d-eb1059334028',0),
+        # Keep 4-8 E-cores available and permit up to 2 P-cores as overload relief.
+        @('54533251-82be-4824-96c1-47b60b740d00','0cc5b647-c1df-4637-891a-dec35c318583',25),
+        @('54533251-82be-4824-96c1-47b60b740d00','ea062031-0e34-4ff1-9b6d-eb1059334028',50),
         @('54533251-82be-4824-96c1-47b60b740d00','0cc5b647-c1df-4637-891a-dec35c318584',0),
-        @('54533251-82be-4824-96c1-47b60b740d00','ea062031-0e34-4ff1-9b6d-eb1059334029',0),
-        @('54533251-82be-4824-96c1-47b60b740d00','93b8b6dc-0698-4d1c-9ee4-0644e900c85d',3),
-        @('54533251-82be-4824-96c1-47b60b740d00','bae08b81-2d5e-4688-ad6a-13243356654b',3),
-        @('54533251-82be-4824-96c1-47b60b740d00','616cdaa5-695e-4545-97ad-97dc2d1bdd88',0),
-        @('54533251-82be-4824-96c1-47b60b740d00','616cdaa5-695e-4545-97ad-97dc2d1bdd89',0),
+        @('54533251-82be-4824-96c1-47b60b740d00','ea062031-0e34-4ff1-9b6d-eb1059334029',25),
+        @('54533251-82be-4824-96c1-47b60b740d00','93b8b6dc-0698-4d1c-9ee4-0644e900c85d',4),
+        @('54533251-82be-4824-96c1-47b60b740d00','bae08b81-2d5e-4688-ad6a-13243356654b',4),
+        @('54533251-82be-4824-96c1-47b60b740d00','616cdaa5-695e-4545-97ad-97dc2d1bdd88',25),
+        @('54533251-82be-4824-96c1-47b60b740d00','616cdaa5-695e-4545-97ad-97dc2d1bdd89',13),
         @('7516b95f-f776-4464-8c53-06167f40cc99','3c0bc021-c8a8-4e07-a973-6b14cbcb2b7e',90),
         @('7516b95f-f776-4464-8c53-06167f40cc99','aded5e82-b909-4619-9949-f5d71dac0bcb',20),
         @('7516b95f-f776-4464-8c53-06167f40cc99','f1fbfde2-a960-4165-9f88-50667911ce96',10),
@@ -352,7 +352,7 @@ function Get-UltraDeviceCandidates {
             }
         }
     }
-    if (-not $KeepUsb4) {
+    if ($false -and -not $KeepUsb4) {
         $root=Get-PnpDevice -Class USB -Status OK -ErrorAction SilentlyContinue |
             Where-Object FriendlyName -like 'USB4 Root Router*' | Select-Object -First 1
         $children=@()
@@ -370,7 +370,7 @@ function Get-UltraDeviceCandidates {
                 ForEach-Object { [pscustomobject]@{InstanceId=$_.InstanceId;FriendlyName=$_.FriendlyName;Kind='USB4'} })
         }
     }
-    if (-not $KeepUsbAccessories) {
+    if ($false -and -not $KeepUsbAccessories) {
         $devices += @(Get-PnpDevice -Class USB -Status OK -ErrorAction SilentlyContinue |
             Where-Object { $_.FriendlyName -eq 'G502 LIGHTSPEED' -and $_.InstanceId -like 'USB\VID_046D&PID_C539\*' } |
             ForEach-Object { [pscustomobject]@{InstanceId=$_.InstanceId;FriendlyName=$_.FriendlyName;Kind='USB accessory'} })
@@ -473,13 +473,33 @@ function Enable-Ultra {
     if (-not $off) { $warn+='RTX remains electrically connected: close every GPU app, disconnect external displays, then toggle off/on.' }
     $kinds=@($state.DisabledDevices | Select-Object -ExpandProperty Kind -Unique)
     $components=if ($kinds.Count) { $kinds -join ', ' } else { 'none (kept, unavailable, or already disabled)' }
-    $m='ULTRA BATTERY MODE ON'+$NL+$NL+'CPU: minimum runnable E-core set; every other E/P-core parked; 10% frequency ceiling.'+$NL+('Components disabled: '+$components)+$NL+(Get-BatteryText)+$NL+$nv
+    $m='ULTRA BATTERY MODE ON'+$NL+$NL+'CPU: 4-8 E-cores, up to 2 P-cores under load, 40% frequency ceiling.'+$NL+('Components disabled: '+$components)+$NL+(Get-BatteryText)+$NL+$nv
     if ($warn.Count) { $m += $NL+$NL+'ACTION NEEDED:'+$NL+'- '+($warn -join ($NL+'- ')) }
     Write-Log 'Enabled'
     Show-Message $m
 }
 
+
+function Repair-StrandedDevices {
+    # Older releases could disable these while reporting failure and therefore
+    # fail to save them in the rollback state.
+    $devices=@(Get-PnpDevice -ErrorAction SilentlyContinue | Where-Object {
+        $_.Status -eq 'Error' -and ($_.FriendlyName -like 'USB4*Host Router*' -or $_.FriendlyName -eq 'G502 LIGHTSPEED')
+    })
+    foreach ($d in $devices) {
+        $problem=Get-PnpDeviceProperty -InstanceId $d.InstanceId -KeyName 'DEVPKEY_Device_ProblemCode' -ErrorAction SilentlyContinue
+        if ($null -eq $problem -or $problem.Data -ne 22) { continue }
+        try { Enable-PnpDevice -InstanceId $d.InstanceId -Confirm:$false -ErrorAction Stop }
+        catch { & pnputil.exe /enable-device $d.InstanceId | Out-Null }
+        $check=Get-PnpDeviceProperty -InstanceId $d.InstanceId -KeyName 'DEVPKEY_Device_ProblemCode' -ErrorAction SilentlyContinue
+        if ($null -ne $check -and $check.Data -eq 22) {
+            throw ('Could not re-enable '+$d.FriendlyName+'. Restart Windows, then run -Mode Off again as administrator.')
+        }
+        Write-Log ('Repaired stranded device: '+$d.FriendlyName)
+    }
+}
 function Disable-Ultra {
+    Repair-StrandedDevices
     $s=Read-State
     if ($null -eq $s) { PowerCfg -Arguments @('/setactive',$BalancedGuid)|Out-Null; Show-Message 'Balanced selected; no saved state existed.'; return }
     Stop-BatteryOverlay
@@ -531,8 +551,20 @@ try {
     }
     switch ($Mode) { 'On'{Enable-Ultra};'Off'{Disable-Ultra};'Status'{Show-Status} }
 } catch {
-    Write-Log ('ERROR: '+$_.Exception.Message)
-    Show-Message ('Toggle failed: '+$_.Exception.Message+$NL+$NL+'Run with -Mode Off to restore saved state.'+$NL+"Log: $LogFile") 'Legion Toggle Error'
+    $originalError=$_.Exception.Message
+    Write-Log ('ERROR: '+$originalError)
+    $rollback='No partial activation was detected.'
+    if ($Mode -eq 'On' -and (Test-Path $StateFile)) {
+        try {
+            Disable-Ultra
+            $rollback='Automatic rollback completed.'
+            Write-Log $rollback
+        } catch {
+            $rollback='Automatic rollback also failed: '+$_.Exception.Message
+            Write-Log $rollback
+        }
+    }
+    Show-Message ('Toggle failed: '+$originalError+$NL+$NL+$rollback+$NL+'Run with -Mode Off if restoration is still needed.'+$NL+"Log: $LogFile") 'Legion Toggle Error'
     exit 1
 } finally {
     $mutex.ReleaseMutex()
