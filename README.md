@@ -25,7 +25,7 @@ When ultra-low-power mode is enabled, the script:
 - temporarily disables the Intel NPU, webcam, disconnected Ethernet, and Bluetooth;
 - always leaves USB4 controllers and USB receivers enabled so that rollback remains reliable;
 - stops Search indexing, Steam, iCUE, and NVIDIA overlay helpers when present;
-- enables Windows dark theme;
+- leaves the user's Windows theme, app mode, system mode, and colors untouched;
 - launches a draggable live battery-watt overlay.
 
 Turning the mode off restores the saved system state and sets display brightness to 60%. If activation throws an error after saving state, the script now attempts automatic rollback.

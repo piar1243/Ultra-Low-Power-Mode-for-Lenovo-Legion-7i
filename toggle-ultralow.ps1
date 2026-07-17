@@ -421,7 +421,6 @@ function Stop-BatteryOverlay {
 function Enable-Ultra {
     $prev=Get-ActiveScheme
     $lenovo=Get-Lenovo
-    $theme='HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize'
     $bg='HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications'
     $bgState=Get-RegState $bg 'GlobalUserDisabled'
     $search=Get-Service WSearch -ErrorAction SilentlyContinue
@@ -437,7 +436,6 @@ function Enable-Ultra {
     $state=[ordered]@{
         PreviousScheme=$prev;Brightness=Get-Brightness;Refresh=Get-Refresh
         SearchRunning=[bool]($search -and $search.Status -eq 'Running');Bluetooth=$bt
-        AppsTheme=Get-RegState $theme 'AppsUseLightTheme';SystemTheme=Get-RegState $theme 'SystemUsesLightTheme'
         Background=$bgState;LegacyDamage=[bool]($prev -eq $BalancedGuid -and (Get-BalancedMax) -eq 20 -and $bgState.Had -and [int]$bgState.Value -eq 1)
         GpuMode=Get-LenovoValue $lenovo 'GetIGPUModeStatus';PowerMode=Get-LenovoValue $lenovo 'GetSmartFanMode'
         GpuPreferences=@();Utilities=@($utilities | Sort-Object Path -Unique)
@@ -447,9 +445,6 @@ function Enable-Ultra {
     Configure-UltraPlan
     $state.GpuPreferences=@(Get-GpuPreferenceStates)
     Save-State $state
-    New-Item $theme -Force | Out-Null
-    Set-ItemProperty $theme AppsUseLightTheme 0 -Type DWord
-    Set-ItemProperty $theme SystemUsesLightTheme 0 -Type DWord
     if ($state.SearchRunning) { Stop-Service WSearch -Force -ErrorAction SilentlyContinue }
     foreach ($id in $state.Bluetooth) { Disable-PnpDevice -InstanceId $id -Confirm:$false -ErrorAction SilentlyContinue }
     Get-Process -Name steam,iCUE,'NVIDIA Overlay',nvsphelper64 -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
@@ -516,8 +511,6 @@ function Disable-Ultra {
         Restore-UltraDevices $s.DisabledDevices
     }
     if ($s.SearchRunning) { Start-Service WSearch -ErrorAction SilentlyContinue }
-    Restore-Reg $s.AppsTheme
-    Restore-Reg $s.SystemTheme
     foreach ($r in @($s.GpuPreferences)) { Restore-Reg $r }
     if ($s.LegacyDamage) {
         Remove-ItemProperty -Path $s.Background.Path -Name $s.Background.Name -ErrorAction SilentlyContinue
@@ -534,7 +527,7 @@ function Disable-Ultra {
     PowerCfg -Arguments @('/setactive',$scheme)|Out-Null
     Remove-Item $StateFile -Force -ErrorAction SilentlyContinue
     Write-Log "Disabled; restored $scheme"
-    Show-Message ('NORMAL MODE RESTORED'+$NL+$NL+'Previous plan, display, Lenovo modes, Bluetooth, NPU/camera/Ethernet devices, Search, theme, GPU preferences, and utilities restored.')
+    Show-Message ('NORMAL MODE RESTORED'+$NL+$NL+'Previous plan, display, Lenovo modes, Bluetooth, NPU/camera/Ethernet devices, Search, GPU preferences, and utilities restored. Windows theme and colors were not changed.')
 }
 
 function Show-Status {
